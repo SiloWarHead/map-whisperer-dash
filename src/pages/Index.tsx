@@ -1,19 +1,44 @@
 import { useState } from 'react';
-import { Wind, Droplets, Thermometer, Activity } from 'lucide-react';
+import { Wind, Droplets, Thermometer, Activity, CloudRain, Snowflake } from 'lucide-react';
 import { MetricCard } from '@/components/MetricCard';
-import { InteractiveMap } from '@/components/InteractiveMap';
-import { CoordinateDisplay } from '@/components/CoordinateDisplay';
+import { CoordinateInput } from '@/components/CoordinateInput';
 
-interface Coordinates {
-  lat: number;
-  lng: number;
+interface WeatherData {
+  temperature: string;
+  humidity: string;
+  airQuality: string;
+  windSpeed: string;
+  rainfall: string;
+  snowfall: string;
 }
 
 const Index = () => {
-  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
-  const handleCoordinatesChange = (coords: Coordinates) => {
-    setCoordinates(coords);
+  const handleSubmitCoordinates = async (lat: number, lng: number, area: number) => {
+    // This would send data to your Python backend
+    // For now, we'll simulate the response
+    try {
+      // TODO: Replace with actual Python API endpoint
+      // const response = await fetch('YOUR_PYTHON_API_ENDPOINT', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ lat, lng, area })
+      // });
+      // const data = await response.json();
+      
+      // Simulated data for display
+      setWeatherData({
+        temperature: '--',
+        humidity: '--',
+        airQuality: '--',
+        windSpeed: '--',
+        rainfall: '--',
+        snowfall: '--'
+      });
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+    }
   };
 
   return (
@@ -28,77 +53,73 @@ const Index = () => {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <MetricCard
-            title="Air Quality"
-            subtitle="Current Index"
-            value="78"
-            unit="AQI"
-            icon={Activity}
-            iconColor="text-quality"
-            iconBg="bg-quality-light"
-            trend={{
-              value: "2.5%",
-              direction: "up",
-              label: "from yesterday"
-            }}
-          />
-
-          <MetricCard
-            title="Wind Speed"
-            subtitle="Current Measurement"
-            value="12"
-            unit="km/h"
-            icon={Wind}
-            iconColor="text-wind"
-            iconBg="bg-wind-light"
-            trend={{
-              value: "NNE",
-              direction: "neutral",
-              label: "direction"
-            }}
-          />
-
-          <MetricCard
-            title="Precipitation"
-            subtitle="Last 24 Hours"
-            value="2.4"
-            unit="mm"
-            icon={Droplets}
-            iconColor="text-sky"
-            iconBg="bg-sky-light"
-            trend={{
-              value: "0.8mm",
-              direction: "down",
-              label: "from average"
-            }}
-          />
-
-          <MetricCard
-            title="Temperature"
-            subtitle="Current Reading"
-            value="24"
-            unit="°C"
-            icon={Thermometer}
-            iconColor="text-temp"
-            iconBg="bg-temp-light"
-            trend={{
-              value: "1.2°",
-              direction: "down",
-              label: "from yesterday"
-            }}
-          />
+        <div className="mb-8">
+          <CoordinateInput onSubmit={handleSubmitCoordinates} />
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2">
-            <InteractiveMap onCoordinatesChange={handleCoordinatesChange} />
+        {weatherData && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <MetricCard
+              title="Temperature"
+              subtitle="Current Reading"
+              value={weatherData.temperature}
+              unit="°C"
+              icon={Thermometer}
+              iconColor="text-temp"
+              iconBg="bg-temp-light"
+            />
+
+            <MetricCard
+              title="Humidity"
+              subtitle="Current Level"
+              value={weatherData.humidity}
+              unit="%"
+              icon={Droplets}
+              iconColor="text-sky"
+              iconBg="bg-sky-light"
+            />
+
+            <MetricCard
+              title="Air Quality"
+              subtitle="Current Index"
+              value={weatherData.airQuality}
+              unit="AQI"
+              icon={Activity}
+              iconColor="text-quality"
+              iconBg="bg-quality-light"
+            />
+
+            <MetricCard
+              title="Wind Speed"
+              subtitle="Current Measurement"
+              value={weatherData.windSpeed}
+              unit="km/h"
+              icon={Wind}
+              iconColor="text-wind"
+              iconBg="bg-wind-light"
+            />
+
+            <MetricCard
+              title="Rainfall"
+              subtitle="Last 24 Hours"
+              value={weatherData.rainfall}
+              unit="mm"
+              icon={CloudRain}
+              iconColor="text-sky"
+              iconBg="bg-sky-light"
+            />
+
+            <MetricCard
+              title="Snowfall"
+              subtitle="Last 24 Hours"
+              value={weatherData.snowfall}
+              unit="cm"
+              icon={Snowflake}
+              iconColor="text-sky"
+              iconBg="bg-sky-light"
+            />
           </div>
-          
-          <div>
-            <CoordinateDisplay coordinates={coordinates} />
-          </div>
-        </div>
+        )}
 
         <footer className="text-center py-6 text-muted-foreground text-sm">
           <p>© 2025 ClearHorizons Dashboard. All rights reserved.</p>
