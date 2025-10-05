@@ -154,16 +154,6 @@ export default function Welcome() {
         </div>
       </section>
 
-      {/* AI Usage Disclosure Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Use of Artificial Intelligence (AI)</h2>
-          <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-            We used AI tools to assist with minor aspects of frontend development, helping us create the website interface and for debugging in the backend. All core concepts, project design, and implementation strategies were developed by our team.
-          </p>
-        </div>
-      </section>
-
       {/* Team Section */}
       <section className="py-20 px-4 bg-card/50">
         <div className="max-w-6xl mx-auto">
