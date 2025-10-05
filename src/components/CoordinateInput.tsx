@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface CoordinateInputProps {
-  onSubmit: (lat: number, lng: number, date: Date) => void;
+  onSubmit: (lat: string, lng: string, date: Date) => void;
 }
 
 export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
@@ -19,28 +19,66 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
 
+  const validateRange = (value: string, min: number, max: number, name: string): boolean => {
+    const trimmed = value.trim();
+    
+    // Check if it's a range (contains " to ")
+    if (trimmed.includes(' to ')) {
+      const parts = trimmed.split(' to ').map(p => p.trim());
+      if (parts.length !== 2) {
+        toast({
+          title: `Invalid ${name}`,
+          description: `${name} range must be in format: "value1 to value2"`,
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const [start, end] = parts.map(p => parseFloat(p));
+      if (isNaN(start) || isNaN(end)) {
+        toast({
+          title: `Invalid ${name}`,
+          description: `${name} values must be numbers`,
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      if (start < min || start > max || end < min || end > max) {
+        toast({
+          title: `Invalid ${name}`,
+          description: `${name} must be between ${min} and ${max}`,
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Single value
+    const val = parseFloat(trimmed);
+    if (isNaN(val) || val < min || val > max) {
+      toast({
+        title: `Invalid ${name}`,
+        description: `${name} must be between ${min} and ${max}`,
+        variant: "destructive"
+      });
+      return false;
+    }
+    
+    return true;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const lat = parseFloat(latitude);
-    const lng = parseFloat(longitude);
-
     // Validation
-    if (isNaN(lat) || lat < -90 || lat > 90) {
-      toast({
-        title: "Invalid Latitude",
-        description: "Latitude must be between -90 and 90",
-        variant: "destructive"
-      });
+    if (!validateRange(latitude, -90, 90, "Latitude")) {
       return;
     }
 
-    if (isNaN(lng) || lng < -180 || lng > 180) {
-      toast({
-        title: "Invalid Longitude",
-        description: "Longitude must be between -180 and 180",
-        variant: "destructive"
-      });
+    if (!validateRange(longitude, -180, 180, "Longitude")) {
       return;
     }
 
@@ -53,11 +91,11 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
       return;
     }
 
-    onSubmit(lat, lng, date);
+    onSubmit(latitude.trim(), longitude.trim(), date);
     
     toast({
       title: "Coordinates Submitted",
-      description: `Fetching weather data for (${lat}, ${lng}) on ${format(date, 'PPP')}...`
+      description: `Fetching weather data for (${latitude.trim()}, ${longitude.trim()}) on ${format(date, 'PPP')}...`
     });
   };
 
@@ -79,9 +117,8 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
             <Label htmlFor="latitude">Latitude</Label>
             <Input
               id="latitude"
-              type="number"
-              step="any"
-              placeholder="-90 to 90"
+              type="text"
+              placeholder="40 or 40 to 45"
               value={latitude}
               onChange={(e) => setLatitude(e.target.value)}
               required
@@ -92,9 +129,8 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
             <Label htmlFor="longitude">Longitude</Label>
             <Input
               id="longitude"
-              type="number"
-              step="any"
-              placeholder="-180 to 180"
+              type="text"
+              placeholder="-74 or -74 to -70"
               value={longitude}
               onChange={(e) => setLongitude(e.target.value)}
               required

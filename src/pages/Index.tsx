@@ -15,7 +15,7 @@ interface WeatherData {
 const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
-  const handleSubmitCoordinates = async (lat: number, lng: number, date: Date) => {
+  const handleSubmitCoordinates = async (lat: string, lng: string, date: Date) => {
     // Replace this with your actual Render app URL
     const RENDER_API_URL = 'YOUR_RENDER_APP_URL'; // e.g., 'https://your-app.onrender.com'
     
