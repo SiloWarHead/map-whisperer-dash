@@ -154,6 +154,31 @@ export default function Welcome() {
         </div>
       </section>
 
+      {/* AI Usage Disclosure Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">Use of Artificial Intelligence (AI)</h2>
+          <div className="space-y-6 text-muted-foreground text-lg">
+            <p>
+              In accordance with NASA Space Apps Challenge guidelines, we acknowledge the use of AI tools in this project. AI was utilized to assist with minor aspects of development, specifically:
+            </p>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <span className="text-primary mt-1">•</span>
+                <span><strong>Frontend Development:</strong> AI tools assisted in creating the website structure and user interface components, helping to accelerate the development process while maintaining our original design vision and functionality requirements.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary mt-1">•</span>
+                <span><strong>Backend Debugging:</strong> AI tools were used for debugging assistance in the backend code, helping to identify and resolve technical issues more efficiently.</span>
+              </li>
+            </ul>
+            <p>
+              All core concepts, project architecture, design decisions, and implementation strategies were developed by our team. The AI tools served as assistants to enhance our workflow, not as replacements for our original thinking and problem-solving abilities. The final product represents our team's skills, creativity, and understanding of the challenge requirements.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Team Section */}
       <section className="py-20 px-4 bg-card/50">
         <div className="max-w-6xl mx-auto">
