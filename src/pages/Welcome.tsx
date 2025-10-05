@@ -159,7 +159,7 @@ export default function Welcome() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-8">Our Team</h2>
           <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-12">
-            Our team came together with a shared passion for leveraging space technology to solve real-world problems. Through countless hours of research, collaboration, and innovation, we've worked tirelessly to transform complex NASA Earth observation data into an accessible tool that empowers users worldwide. Each member brought unique expertise and unwavering dedication to make ClearHorizons a reality.
+            We're a team of seventh-grade science enthusiasts from Rajuk Uttara Model College (RUMC) and Bangladesh International Tutorial Limited (BITL). We're passionate about the deeper realms of science especially space exploration, physics, and programming but we're always eager to pursue knowledge across all fields of science. We've been exploring every branch of science we can get our hands on for quite some time, and we're strongly motivated to innovate and contribute to the world through science to make it a better place. That's why the NASA Space Apps program has been a great opportunity for us to showcase our skills.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
