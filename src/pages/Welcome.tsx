@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Gauge, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -42,13 +43,16 @@ export default function Welcome() {
         </div>
 
         <div className="text-center space-y-8 max-w-4xl mx-auto">
-          <div className="space-y-4">
-            <p className="text-lg text-muted-foreground">
-              Beyond The Clouds presents
-            </p>
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
-              ClearHorizons
-            </h1>
+          <div className="space-y-6">
+            <img src={logo} alt="ClearHorizons Logo" className="w-48 h-48 mx-auto object-contain" />
+            <div className="space-y-2">
+              <p className="text-xl text-muted-foreground">
+                Beyond the Clouds presents
+              </p>
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                ClearHorizons
+              </h1>
+            </div>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Personalized Weather Insights Powered by NASA Earth Observation Data
             </p>
