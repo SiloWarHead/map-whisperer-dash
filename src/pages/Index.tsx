@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Wind, Droplets, Thermometer, Activity, CloudRain, Snowflake } from 'lucide-react';
 import { MetricCard } from '@/components/MetricCard';
 import { CoordinateInput } from '@/components/CoordinateInput';
-import earthHero from '@/assets/earth-hero.jpg';
 
 interface WeatherData {
   temperature: string;
@@ -44,20 +43,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Hero Section with Earth Image */}
-      <div className="relative w-full h-[400px] mb-12 overflow-hidden">
-        <img 
-          src={earthHero} 
-          alt="Earth from space" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center px-4">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-3 drop-shadow-2xl">
-              ClearHorizons <span className="text-primary drop-shadow-[0_0_20px_rgba(66,153,225,0.8)]">Dashboard</span>
+      {/* Hero Section */}
+      <div className="w-full py-16 mb-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              ClearHorizons Dashboard
             </h1>
-            <p className="text-white/90 text-lg md:text-xl drop-shadow-lg">
+            <p className="text-muted-foreground text-lg md:text-xl">
               Real-time weather metrics powered by NASA Earth observation data
             </p>
           </div>
