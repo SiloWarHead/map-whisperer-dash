@@ -16,28 +16,76 @@ const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const handleSubmitCoordinates = async (lat: number, lng: number, date: Date) => {
-    // This would send data to your Python backend
-    // For now, we'll simulate the response
+    // Replace this with your actual Render app URL
+    const RENDER_API_URL = 'YOUR_RENDER_APP_URL'; // e.g., 'https://your-app.onrender.com'
+    
     try {
-      // TODO: Replace with actual Python API endpoint
-      // const response = await fetch('YOUR_PYTHON_API_ENDPOINT', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ lat, lng, date: date.toISOString() })
-      // });
-      // const data = await response.json();
-      
-      // Simulated data for display
+      const dateStr = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const requestBody = { lat, lng, date: dateStr };
+
+      // Fetch all weather metrics in parallel
+      const [humidityRes, airDensityRes, tempRes, snowRes, rainRes, windRes] = await Promise.all([
+        fetch(`${RENDER_API_URL}/humidity`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }),
+        fetch(`${RENDER_API_URL}/airdensity`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }),
+        fetch(`${RENDER_API_URL}/temperature`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }),
+        fetch(`${RENDER_API_URL}/snow`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }),
+        fetch(`${RENDER_API_URL}/rain`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }),
+        fetch(`${RENDER_API_URL}/windspeed`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        })
+      ]);
+
+      // Parse all responses
+      const [humidity, airDensity, temperature, snow, rain, windSpeed] = await Promise.all([
+        humidityRes.json(),
+        airDensityRes.json(),
+        tempRes.json(),
+        snowRes.json(),
+        rainRes.json(),
+        windRes.json()
+      ]);
+
+      // Update weather data with API responses
       setWeatherData({
-        temperature: '--',
-        humidity: '--',
-        airQuality: '--',
-        windSpeed: '--',
-        rainfall: '--',
-        snowfall: '--'
+        temperature: temperature.average_temperature?.toFixed(1) || '--',
+        humidity: humidity.average_humidity?.toFixed(1) || '--',
+        airQuality: airDensity.average_air_density?.toFixed(3) || '--',
+        windSpeed: windSpeed.average_wind_speed?.toFixed(1) || '--',
+        rainfall: rain.total_precipitation?.toFixed(1) || '--',
+        snowfall: snow.total_snowfall?.toFixed(1) || '--'
       });
     } catch (error) {
       console.error('Error fetching weather data:', error);
+      setWeatherData({
+        temperature: 'Error',
+        humidity: 'Error',
+        airQuality: 'Error',
+        windSpeed: 'Error',
+        rainfall: 'Error',
+        snowfall: 'Error'
+      });
     }
   };
 
