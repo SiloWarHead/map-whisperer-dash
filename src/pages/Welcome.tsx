@@ -138,17 +138,35 @@ export default function Welcome() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center p-6 rounded-xl bg-card border border-border hover:border-primary/50 transition-all hover:-translate-y-1"
-              >
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl font-bold text-primary-foreground mb-4">
-                  {member.initials}
+            {teamMembers.map((member, index) => {
+              const gradients = [
+                'from-primary via-accent to-secondary',
+                'from-secondary via-primary to-accent',
+                'from-accent via-secondary to-primary',
+                'from-primary via-secondary to-accent'
+              ];
+              const glowColors = [
+                'shadow-[0_0_40px_rgba(66,153,225,0.5)]',
+                'shadow-[0_0_40px_rgba(16,185,129,0.5)]',
+                'shadow-[0_0_40px_rgba(168,85,247,0.5)]',
+                'shadow-[0_0_40px_rgba(66,153,225,0.5)]'
+              ];
+              
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col items-center p-6 rounded-xl bg-gradient-to-br from-card to-card/50 border-2 border-primary/30 hover:border-primary transition-all hover:-translate-y-2 hover:scale-105 duration-300"
+                  style={{
+                    boxShadow: '0 8px 32px -8px rgba(66, 153, 225, 0.3)'
+                  }}
+                >
+                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${gradients[index]} flex items-center justify-center text-2xl font-bold text-white mb-4 ${glowColors[index]} hover:scale-110 transition-transform duration-300 animate-pulse`}>
+                    {member.initials}
+                  </div>
+                  <h3 className="text-lg font-semibold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{member.name}</h3>
                 </div>
-                <h3 className="text-lg font-semibold text-center">{member.name}</h3>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

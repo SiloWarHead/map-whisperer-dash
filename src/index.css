@@ -56,50 +56,61 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --background: 222 47% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 15%;
+    --card: 220 40% 12%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222 47% 15%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
+    --primary: 217 91% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 160 84% 39%;
+    --secondary: 165 80% 50%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 217 91% 60%;
+    --accent: 280 85% 65%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 33% 18%;
+    --border: 217 33% 22%;
     --input: 217 33% 18%;
-    --ring: 217 91% 60%;
+    --ring: 217 91% 65%;
+    
+    --sky-blue: 217 91% 65%;
+    --sky-light: 217 80% 20%;
+    --wind-cyan: 189 85% 55%;
+    --wind-light: 189 70% 25%;
+    --temp-orange: 27 90% 65%;
+    --temp-light: 27 70% 25%;
+    --quality-purple: 280 85% 65%;
+    --quality-light: 280 60% 25%;
+    
+    --gradient-sky: linear-gradient(135deg, hsl(217 91% 65%), hsl(204 100% 75%));
+    --gradient-weather: linear-gradient(to bottom, hsl(222 47% 8%), hsl(217 60% 15%));
+    --gradient-vibrant: linear-gradient(135deg, hsl(217 91% 65%), hsl(280 85% 65%), hsl(165 80% 50%));
+    --gradient-card: linear-gradient(135deg, hsl(220 40% 12%), hsl(217 50% 16%));
+    
+    --shadow-elegant: 0 8px 32px -8px hsl(217 91% 50% / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(217 91% 50% / 0.2);
+    --shadow-glow: 0 0 40px hsl(217 91% 65% / 0.15);
   }
 }
 
