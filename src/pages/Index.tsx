@@ -15,7 +15,7 @@ interface WeatherData {
 const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
-  const handleSubmitCoordinates = async (lat: number, lng: number, area: number) => {
+  const handleSubmitCoordinates = async (lat: number, lng: number, date: Date) => {
     // This would send data to your Python backend
     // For now, we'll simulate the response
     try {
@@ -23,7 +23,7 @@ const Index = () => {
       // const response = await fetch('YOUR_PYTHON_API_ENDPOINT', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ lat, lng, area })
+      //   body: JSON.stringify({ lat, lng, date: date.toISOString() })
       // });
       // const data = await response.json();
       

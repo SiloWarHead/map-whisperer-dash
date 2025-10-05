@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 interface CoordinateInputProps {
-  onSubmit: (lat: number, lng: number, area: number) => void;
+  onSubmit: (lat: number, lng: number, date: Date) => void;
 }
 
 export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-  const [area, setArea] = useState('');
+  const [date, setDate] = useState<Date>();
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -20,7 +24,6 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
 
     const lat = parseFloat(latitude);
     const lng = parseFloat(longitude);
-    const areaValue = parseFloat(area);
 
     // Validation
     if (isNaN(lat) || lat < -90 || lat > 90) {
@@ -41,20 +44,20 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
       return;
     }
 
-    if (isNaN(areaValue) || areaValue <= 0 || areaValue > 25) {
+    if (!date) {
       toast({
-        title: "Invalid Area",
-        description: "Area must be between 0 and 25 sq km",
+        title: "Invalid Date",
+        description: "Please select a date",
         variant: "destructive"
       });
       return;
     }
 
-    onSubmit(lat, lng, areaValue);
+    onSubmit(lat, lng, date);
     
     toast({
       title: "Coordinates Submitted",
-      description: `Fetching weather data for (${lat}, ${lng}) with ${areaValue} sq km area...`
+      description: `Fetching weather data for (${lat}, ${lng}) on ${format(date, 'PPP')}...`
     });
   };
 
@@ -66,7 +69,7 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
         </div>
         <div>
           <h2 className="text-2xl font-semibold text-card-foreground">Enter Coordinates</h2>
-          <p className="text-sm text-muted-foreground">Area must be under 25 sq km</p>
+          <p className="text-sm text-muted-foreground">Select coordinates and date for weather data</p>
         </div>
       </div>
 
@@ -99,16 +102,30 @@ export const CoordinateInput = ({ onSubmit }: CoordinateInputProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="area">Area (sq km)</Label>
-            <Input
-              id="area"
-              type="number"
-              step="any"
-              placeholder="Max 25 sq km"
-              value={area}
-              onChange={(e) => setArea(e.target.value)}
-              required
-            />
+            <Label>Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
 
