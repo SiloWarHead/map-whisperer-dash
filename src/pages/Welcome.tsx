@@ -141,10 +141,7 @@ export default function Welcome() {
               The interface is designed with user experience at its core. Users can input geographical coordinates and area parameters through an intuitive form interface. Once submitted, the dashboard fetches real-time weather data from NASA's POWER (Prediction Of Worldwide Energy Resources) API, which provides comprehensive Earth observation datasets including temperature, humidity, wind speed, air quality, rainfall, and snowfall measurements.
             </p>
             <p>
-              The backend functionality processes user requests and communicates with NASA's APIs to retrieve relevant climate data. Data is then processed and visualized through interactive metric cards that display current readings in an easy-to-understand format. Each weather parameter is color-coded and accompanied by intuitive icons for quick recognition.
-            </p>
-            <p>
-              Our application utilizes Mapbox GL for interactive mapping capabilities, allowing users to visualize their selected locations geographically. The responsive design ensures seamless functionality across desktop, tablet, and mobile devices, making weather insights accessible anywhere, anytime.
+              The backend functionality processes user requests and communicates with NASA's APIs to retrieve relevant climate data. Data is then processed and visualized through interactive metric cards that display current readings in an easy-to-understand format. Each weather parameter is color-coded and accompanied by intuitive icons for quick recognition. The responsive design ensures seamless functionality across desktop, tablet, and mobile devices, making weather insights accessible anywhere, anytime.
             </p>
             <p>
               The entire codebase follows best practices for maintainability and scalability, with modular components, efficient state management using React hooks, and clean separation of concerns. This architecture allows for easy feature additions and ensures the application can grow alongside user needs.
