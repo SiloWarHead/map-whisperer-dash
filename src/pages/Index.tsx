@@ -16,64 +16,22 @@ const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const handleSubmitCoordinates = async (lat: string, lng: string, date: Date) => {
-    const RENDER_API_URL = 'https://clearhorizons-app.onrender.com';
-    
     try {
       const dateStr = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      const requestBody = { lat, lng, date: dateStr };
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data, error } = await supabase.functions.invoke('weather', {
+        body: { lat, lng, date: dateStr },
+      });
 
-      // Fetch all weather metrics in parallel
-      const [humidityRes, airDensityRes, tempRes, snowRes, rainRes, windRes] = await Promise.all([
-        fetch(`${RENDER_API_URL}/humidity`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        }),
-        fetch(`${RENDER_API_URL}/airdensity`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        }),
-        fetch(`${RENDER_API_URL}/temperature`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        }),
-        fetch(`${RENDER_API_URL}/snow`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        }),
-        fetch(`${RENDER_API_URL}/rain`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        }),
-        fetch(`${RENDER_API_URL}/windspeed`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
-        })
-      ]);
+      if (error) throw error;
 
-      // Parse all responses
-      const [humidity, airDensity, temperature, snow, rain, windSpeed] = await Promise.all([
-        humidityRes.json(),
-        airDensityRes.json(),
-        tempRes.json(),
-        snowRes.json(),
-        rainRes.json(),
-        windRes.json()
-      ]);
-
-      // Update weather data with API responses
       setWeatherData({
-        temperature: temperature.average_temperature?.toFixed(1) || '--',
-        humidity: humidity.average_humidity?.toFixed(1) || '--',
-        airQuality: airDensity.average_air_density?.toFixed(3) || '--',
-        windSpeed: windSpeed.average_wind_speed?.toFixed(1) || '--',
-        rainfall: rain.total_precipitation?.toFixed(1) || '--',
-        snowfall: snow.total_snowfall?.toFixed(1) || '--'
+        temperature: data?.average_temperature?.toFixed?.(1) ?? '--',
+        humidity: data?.average_humidity?.toFixed?.(1) ?? '--',
+        airQuality: data?.average_air_density?.toFixed?.(3) ?? '--',
+        windSpeed: data?.average_wind_speed?.toFixed?.(1) ?? '--',
+        rainfall: data?.total_precipitation?.toFixed?.(1) ?? '--',
+        snowfall: data?.total_snowfall?.toFixed?.(1) ?? '--',
       });
     } catch (error) {
       console.error('Error fetching weather data:', error);
@@ -83,7 +41,7 @@ const Index = () => {
         airQuality: 'Error',
         windSpeed: 'Error',
         rainfall: 'Error',
-        snowfall: 'Error'
+        snowfall: 'Error',
       });
     }
   };
