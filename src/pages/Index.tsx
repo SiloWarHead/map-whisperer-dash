@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Wind, Droplets, Thermometer, Activity, CloudRain, Snowflake } from 'lucide-react';
 import { MetricCard } from '@/components/MetricCard';
 import { CoordinateInput } from '@/components/CoordinateInput';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WeatherData {
   temperature: string;
@@ -14,16 +16,17 @@ interface WeatherData {
 
 const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const { toast } = useToast();
 
   const handleSubmitCoordinates = async (lat: string, lng: string, date: Date) => {
     try {
-      const dateStr = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      const { supabase } = await import('@/integrations/supabase/client');
-      const { data, error } = await supabase.functions.invoke('weather', {
-        body: { lat, lng, date: dateStr },
-      });
-
-      if (error) throw error;
+const dateStr = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+const { data, error } = await supabase.functions.invoke('weather', {
+  body: { lat, lng, date: dateStr },
+});
+if (error || (data && (data as any).error)) {
+  throw new Error((data as any)?.error || (error as any)?.message || 'Unknown error');
+}
 
       setWeatherData({
         temperature: data?.average_temperature?.toFixed?.(1) ?? '--',
@@ -33,17 +36,27 @@ const Index = () => {
         rainfall: data?.total_precipitation?.toFixed?.(1) ?? '--',
         snowfall: data?.total_snowfall?.toFixed?.(1) ?? '--',
       });
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      setWeatherData({
-        temperature: 'Error',
-        humidity: 'Error',
-        airQuality: 'Error',
-        windSpeed: 'Error',
-        rainfall: 'Error',
-        snowfall: 'Error',
+
+      toast({
+        title: 'Weather data fetched',
+        description: `Fetched metrics for ${dateStr}`,
       });
-    }
+} catch (error: any) {
+  console.error('Error fetching weather data:', error);
+  toast({
+    title: 'Failed to fetch weather data',
+    description: error?.message ?? 'Unexpected error',
+    variant: 'destructive',
+  });
+  setWeatherData({
+    temperature: 'Error',
+    humidity: 'Error',
+    airQuality: 'Error',
+    windSpeed: 'Error',
+    rainfall: 'Error',
+    snowfall: 'Error',
+  });
+}
   };
 
   return (
